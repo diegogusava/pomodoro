@@ -26,6 +26,8 @@ rest=$(( $rest * 60 ))
 
 image=$(readlink -f pomodoro.png)
 
+DISPLAY=:0 notify-send -t 1000 -i $image "New pomodoro starts" "You have 25 minutes to work."
+
 loop $pomodoro
 
 clear
@@ -33,6 +35,8 @@ clear
 now=$(date +"%T")
 
 printf "Pomodoro ends at $now\n"
+
+DISPLAY=:0 notify-send -t 1000 -i $image "pomodoro ends" "Take a rest!"
 
 printf "Take a rest! Press any key to continue!!"
 
@@ -43,7 +47,3 @@ loop $rest
 now=$(date +"%T")
 
 printf "Rest ends at $now\n"
-
-
-
-
