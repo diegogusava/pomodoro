@@ -1,0 +1,51 @@
+#!/bin/bash
+
+clear
+
+printf "Pomodoro (minutes): "
+read pomodoro
+
+printf "Rest (minutes): "
+read rest
+
+function loop() {
+	time=$1
+	while [ $time -gt 0 ] 
+	do
+		time=$(( $time - 1 ))
+		now=$(date +"%T")
+		sleep 1
+		printf "$now: $(( $time / 60 )) minute(s) and $(( $time % 60 )) second(s) left\n"
+	done
+}
+
+printf "New pomodoro starts. You have ${pomodoro} minute(s) to work.\n"
+
+pomodoro=$(( $pomodoro * 60 ))
+rest=$(( $rest * 60 ))
+
+image=$(readlink -f pomodoro.png)
+
+DISPLAY=:0 notify-send -t 1000 -i $image "New pomodoro starts" "You have 25 minutes to work."
+
+loop $pomodoro
+
+clear
+
+now=$(date +"%T")
+
+printf "Pomodoro ends at $now\n"
+
+printf "Take a rest! Press any key to continue!!"
+
+read whatever
+
+loop $rest
+
+now=$(date +"%T")
+
+printf "Rest ends at $now\n"
+
+DISPLAY=:0 notify-send -t 1000 -i $image "pomodoro ends" "Take a rest!"
+
+
